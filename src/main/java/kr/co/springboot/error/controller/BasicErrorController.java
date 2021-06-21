@@ -16,8 +16,10 @@ public class BasicErrorController implements ErrorController {
 	
 	@RequestMapping("/error")
 	public ModelAndView error(HttpServletRequest request) throws Exception {
-		ModelAndView mav = new ModelAndView("/error/error.html");
-		String errorCode = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE).toString();
+		ModelAndView mav = new ModelAndView("error/error");
+		Object errorObj = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
+		String errorCode = (errorObj != null) ? errorObj.toString() : "200";
+		//String errorCode = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE).toString();
 		
 		mav.addObject("errorCode", errorCode);
 		
