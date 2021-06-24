@@ -1,17 +1,19 @@
 package kr.co.springboot.board.vo;
 
 import lombok.*;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
 @Builder
 @ToString
 @Entity(name = "Board")
 @Table(name = "Board", indexes = {@Index(name = "index_board_1", columnList = "deleteYn")})
+@Where(clause = "deleteYn = N")
 public class BoardVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -2,9 +2,18 @@ package kr.co.springboot.board.repository;
 
 import kr.co.springboot.board.vo.BoardVO;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Repository
 public interface BoardRepository extends JpaRepository<BoardVO, Long> {
-
+	
+	@Transactional
+	@Modifying
+	@Query("delete from Board where id in :idList")
+	void deleteAllById(List<Long> idList);
 }
