@@ -29,8 +29,13 @@ public class BoardController {
 	}
 	
 	@PostMapping(value = "/findOne", produces = "application/json;charset=UTF-8;")
-	public BoardVO findOne(@RequestParam HashMap<String, Object> paramMap) throws Exception {
-		return boardService.findById(paramMap);
+	public ModelAndView findOne(@RequestParam HashMap<String, Object> paramMap) throws Exception {
+		ModelAndView mav = new ModelAndView("board/board");
+		BoardVO boardVO = boardService.findById(paramMap);
+		
+		mav.addObject("boardVO", boardVO);
+		
+		return mav;
 	}
 	
 	@PostMapping(value = "/save", produces = "application/json;charset=UTF-8;")
