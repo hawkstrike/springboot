@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @ToString
 @Entity(name = "Board")
 @Table(name = "Board", indexes = {@Index(name = "index_board_1", columnList = "deleteYn")})
-@Where(clause = "deleteYn = N")
+@Where(clause = "delete_yn = 'N'")
 public class BoardVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

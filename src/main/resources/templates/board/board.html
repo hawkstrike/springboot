@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+
+<th:block layout:fragment="css">
+	<link rel="stylesheet" type="text/css" href="/css/board/board.css" />
+</th:block>
+
+<th:block layout:fragment="js">
+	<script src="/js/board/board.js"></script>
+</th:block>
+
+<div layout:fragment="content" class="container_wrap">
+	<h2>게시판</h2>
+	
+	<table class="board_table">
+		<colgroup>
+			<col width="10%"/>  <!-- 번호 -->
+			<col width=""/>     <!-- 제목 -->
+			<col width="20%"/>  <!-- 작성자 -->
+			<col width="10%"/>  <!-- 조회수 -->
+			<col width="10%"/>  <!-- 작성일 -->
+		</colgroup>
+		<thead>
+			<tr>
+				<th>번호</th>
+				<th>제목</th>
+				<th>작성자</th>
+				<th>조회수</th>
+				<th>작성일</th>
+			</tr>
+		</thead>
+		
+		<tbody th:if="${resultList.size() == 0}">
+			<tr>
+				<td colspan="5">조회된 게시물이 없습니다.</td>
+			</tr>
+		</tbody>
+		
+		<tbody th:if="${resultList.size() != 0}">
+		<tr th:each="board : ${resultList}">
+			<td th:text="${board.id}"></td>
+			<td th:text="${board.title}"></td>
+			<td th:text="${board.userName}"></td>
+			<td th:text="${board.readCount}"></td>
+			<td th:text="${board.createDate}"></td>
+		</tr>
+		</tbody>
+	</table>
+</div>
+
+</html>

@@ -18,7 +18,7 @@ public class BoardController {
 	@Autowired
 	private BoardService boardService;
 	
-	@GetMapping(value = "/")
+	@GetMapping(value = "")
 	public ModelAndView main(@RequestParam HashMap<String, Object> paramMap) throws Exception {
 		ModelAndView mav = new ModelAndView("board/board");
 		List<BoardVO> resultList = boardService.findAll(paramMap);
@@ -30,7 +30,7 @@ public class BoardController {
 	
 	@PostMapping(value = "/findOne", produces = "application/json;charset=UTF-8;")
 	public ModelAndView findOne(@RequestParam HashMap<String, Object> paramMap) throws Exception {
-		ModelAndView mav = new ModelAndView("board/board");
+		ModelAndView mav = new ModelAndView("board/boardDetail");
 		BoardVO boardVO = boardService.findById(paramMap);
 		
 		mav.addObject("boardVO", boardVO);

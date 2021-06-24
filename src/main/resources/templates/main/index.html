@@ -1,18 +1,20 @@
 <!DOCTYPE html>
-<!--<html lang="en">-->
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorator="~{layout/layout}">
-<!--<head>
-	<meta charset="UTF-8">
-	<title>My First Spring Boot Project!</title>
-</head>
-<body>
-<h1>My First Spring Boot Project!</h1>
-</body>-->
+      layout:decorate="~{layout/layout}">
+
+<th:block layout:fragment="js">
+	<script src="/js/main/main.js"></script>
+</th:block>
 
 <div layout:fragment="content">
 	<h1>My First Spring Boot Project!</h1>
+	
+	<a href="/board/">
+		<button>move board</button>
+	</a>
+	<!--<button class="btn_delete_test">delete_test</button>-->
 </div>
+
 </html>
