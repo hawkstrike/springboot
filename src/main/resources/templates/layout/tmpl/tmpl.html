@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- 게시판 template -->
+<script id="addBoardTable" type="text/html">
+	<table class="board_table">
+		<colgroup>
+			<col width="10%"/>  <!-- 번호 -->
+			<col width=""/>     <!-- 제목 -->
+			<col width="20%"/>  <!-- 작성자 -->
+			<col width="10%"/>  <!-- 조회수 -->
+			<col width="10%"/>  <!-- 작성일 -->
+		</colgroup>
+		<thead>
+		<tr>
+			<th>번호</th>
+			<th>제목</th>
+			<th>작성자</th>
+			<th>조회수</th>
+			<th>작성일</th>
+		</tr>
+		</thead>
+		
+		<tbody>
+		{%if resultList.length >= 1%}
+		{%each(index, value) resultList%}
+		<tr>
+			<td>{%= value.id%}</td>
+			<td>{%= value.title%}</td>
+			<td>{%= value.userName%}</td>
+			<td>{%= value.readCount%}</td>
+			<td>{%= value.createDate%}</td>
+		</tr>
+		{%/each%}
+		{%else%}
+		<tr>
+			<td colspan="5">조회된 게시물이 없습니다.</td>
+		</tr>
+		{%/if%}
+		</tbody>
+	</table>
+</script>
+</html>
