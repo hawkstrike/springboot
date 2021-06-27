@@ -31,10 +31,11 @@ public class BoardService {
 	public List<BoardVO> findAll(HashMap<String, Object> paramMap) throws Exception {
 		log.info("[findAll] [paramMap] - " + paramMap.toString());
 		
+		Sort dateSort = Sort.by(Sort.Order.desc("createDate"));
 		String pageNumber = paramMap.getOrDefault("startPage", "0").toString().strip();
 		String pageSize = paramMap.getOrDefault("pageSize", "10").toString().strip();
 		String sortOrder = paramMap.getOrDefault("sort", "id").toString().strip();
-		Page<BoardVO> resultList = boardRepository.findAll(PageRequest.of(Integer.parseInt(pageNumber), Integer.parseInt(pageSize), Sort.by(sortOrder)));
+		Page<BoardVO> resultList = boardRepository.findAll(PageRequest.of(Integer.parseInt(pageNumber), Integer.parseInt(pageSize), Sort.by(sortOrder).and(dateSort)));
 		
 		log.info("[findAll] [resultList] [totalCount] - " + resultList.getTotalElements());
 		

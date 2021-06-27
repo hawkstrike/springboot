@@ -10,10 +10,40 @@
 
 <th:block layout:fragment="js">
 	<script src="/js/board/board.js"></script>
+	<script type="text/javascript">
+		/*$(function () {
+			var tmplObj = {
+				resultList: [[${resultList}]]
+			};
+			
+			console.log('tmplObj :', tmplObj);
+			
+			$('.content_area').html($('#addBoardTable').tmpl(tmplObj));
+		});*/
+	</script>
 </th:block>
 
 <div layout:fragment="content" class="container_wrap">
 	<h2>게시판</h2>
+	
+	<div class="additional_service_area">
+		<div class="board_search_area">
+			<select class="search_type">
+				<option value="">전체</option>
+				<option value="title">제목</option>
+				<option value="content">내용</option>
+				<option value="userName">작성자</option>
+			</select>
+			<input type="text" class="search_text" title="검색어를 입력하세요." placeholder="검색어를 입력하세요."/>
+			<div class="btn_board_search_area">
+				<a href="javascript:" class="board_search_link">검색</a>
+			</div>
+		</div>
+		
+		<div class="board_button_area">
+			<a href="/board/findOne?type=i" class="board_insertion_link">등록</a>
+		</div>
+	</div>
 	
 	<table class="board_table">
 		<colgroup>
@@ -49,6 +79,10 @@
 		</tr>
 		</tbody>
 	</table>
+	
+	<div class="pagination_area">
+	
+	</div>
 </div>
 
 </html>

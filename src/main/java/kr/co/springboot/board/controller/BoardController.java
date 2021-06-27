@@ -28,12 +28,23 @@ public class BoardController {
 		return mav;
 	}
 	
-	@PostMapping(value = "/findOne", produces = "application/json;charset=UTF-8;")
+	@PostMapping(value = "/findAll", produces = "application/json;charset=UTF-8")
+	public List<BoardVO> findAll(@RequestParam HashMap<String, Object> paramMap) throws Exception {
+		return boardService.findAll(paramMap);
+	}
+	
+	@RequestMapping(value = "/findOne", method = {RequestMethod.GET, RequestMethod.POST}, produces = "application/json;charset=UTF-8;")
 	public ModelAndView findOne(@RequestParam HashMap<String, Object> paramMap) throws Exception {
 		ModelAndView mav = new ModelAndView("board/boardDetail");
-		BoardVO boardVO = boardService.findById(paramMap);
+		String type = paramMap.getOrDefault("type", "r").toString().strip();
 		
-		mav.addObject("boardVO", boardVO);
+		if ("r".equals(type)) {
+			BoardVO boardVO = boardService.findById(paramMap);
+			
+			mav.addObject("boardVO", boardVO);
+		}
+		
+		mav.addObject("type", type);
 		
 		return mav;
 	}

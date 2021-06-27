@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+
+<th:block layout:fragment="css">
+	<link rel="stylesheet" type="text/css" href="/css/board/board.css"/>
+</th:block>
+
+<th:block layout:fragment="js">
+	<script src="/js/board/board.js"></script>
+	<script type="text/javascript">
+		$(function () {
+		
+		});
+	</script>
+</th:block>
+
+<div layout:fragment="content" class="container_wrap">
+	<h2>게시판</h2>
+	
+	<div class="board_detail_area">
+		<div class="board_top_area">
+			
+			<!-- 번호 -->
+			<div th:if="${type == 'r'}" class="board_id_area">
+				<span>번호</span>
+				<span th:text="${boardVO.id}"></span>
+			</div>
+			
+			<!-- 제목 -->
+			<div class="board_title_area">
+				<span>제목</span>
+				<input type="text" class="board_title" title="제목" placeholder="제목을 입력하세요."
+				       th:value="${(type == 'r') ? boardVO.title : ''}"/>
+			</div>
+			
+			<!-- 작성자 -->
+			<div class="board_user_name_area">
+				<span>작성자</span>
+				<input type="text" class="board_user_name" title="작성자" placeholder="작성자를 입력하세요."
+				       th:value="${(type == 'r') ? boardVO.userName : ''}"/>
+			</div>
+		</div>
+		
+		<div class="board_bottom_area">
+			<!-- 내용 -->
+			<div class="board_content_area">
+				<span>내용</span>
+				<textarea class="board_content" title="내용" placeholder="내용을 입력하세요."
+				          th:text="${(type == 'r') ? boardVO.content : ''}">
+				</textarea>
+			</div>
+		</div>
+		
+		<div class="board_button_area">
+			<div class="btn_board_list_area">
+				목록
+			</div>
+			<div class="btn_board_insertion_area">
+				등록
+			</div>
+		</div>
+	</div>
+</div>
+
+</html>
