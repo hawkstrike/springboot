@@ -20,11 +20,11 @@
 <div layout:fragment="content" class="container_wrap">
 	<h2>게시판</h2>
 	
-	<div class="board_detail_area">
+	<div class="board_detail_area" th:data="${type}">
 		<div class="board_top_area">
 			
 			<!-- 번호 -->
-			<div th:if="${type == 'r'}" class="board_id_area">
+			<div th:if="${type == 'r'}" class="board_id_area" th:data="${boardVO.id}">
 				<span>번호</span>
 				<span th:text="${boardVO.id}"></span>
 			</div>
@@ -54,12 +54,14 @@
 			</div>
 		</div>
 		
-		<div class="board_button_area">
+		<div class="board_detail_button_area">
 			<div class="btn_board_list_area">
-				목록
+				<a href="/board" class="btn_board_list" title="목록">목록</a>
 			</div>
-			<div class="btn_board_insertion_area">
-				등록
+			<div class="btn_board_save_area">
+				<a href="javascript:" class="btn_board_save"
+				   th:title="${(type == 'r') ? '글 수정' : '글 등록'}"
+				   th:text="${(type == 'r') ? '글 수정' : '글 등록'}"></a>
 			</div>
 		</div>
 	</div>

@@ -31,11 +31,10 @@ public class BoardService {
 	public List<BoardVO> findAll(HashMap<String, Object> paramMap) throws Exception {
 		log.info("[findAll] [paramMap] - " + paramMap.toString());
 		
-		Sort dateSort = Sort.by(Sort.Order.desc("createDate"));
 		String pageNumber = paramMap.getOrDefault("startPage", "0").toString().strip();
 		String pageSize = paramMap.getOrDefault("pageSize", "10").toString().strip();
-		String sortOrder = paramMap.getOrDefault("sort", "id").toString().strip();
-		Page<BoardVO> resultList = boardRepository.findAll(PageRequest.of(Integer.parseInt(pageNumber), Integer.parseInt(pageSize), Sort.by(sortOrder).and(dateSort)));
+		String sortOrder = paramMap.getOrDefault("sort", "createDate").toString().strip();
+		Page<BoardVO> resultList = boardRepository.findAll(PageRequest.of(Integer.parseInt(pageNumber), Integer.parseInt(pageSize), Sort.by(Sort.Order.desc(sortOrder))));
 		
 		log.info("[findAll] [resultList] [totalCount] - " + resultList.getTotalElements());
 		
@@ -83,30 +82,27 @@ public class BoardService {
 	 */
 	public BoardVO save(HashMap<String, Object> paramMap) throws Exception {
 		log.info("[save] [paramMap] - " + paramMap.toString());
-		String idStr = paramMap.getOrDefault("id", "-1").toString().strip();
+		
+		String id = paramMap.getOrDefault("id", "-1").toString().strip();
 		String title = paramMap.getOrDefault("title", "").toString().strip();
 		String content = paramMap.getOrDefault("content", "").toString().strip();
 		String userName = paramMap.getOrDefault("userName", "").toString().strip();
-		//long id = Long.parseLong(idStr);
-		//Optional<BoardVO> optional = boardRepository.findById(id);
-		//BoardVO boardVO = (optional.isPresent()) ? optional.get() : new BoardVO();
 		BoardVO.BoardVOBuilder builder = BoardVO.builder();
 		
-		if ("".equals(title)) {
+		if (!"".equals(title)) {
 			builder.title(title);
 		}
 		
-		if ("".equals(content)) {
+		if (!"".equals(content)) {
 			builder.content(content);
 		}
 		
-		if ("".equals(userName)) {
+		if (!"".equals(userName)) {
 			builder.userName(userName);
 		}
 		
-		//if (optional.isPresent()) { // update
-		if(!"-1".equals(idStr)) {
-			builder.id(Long.parseLong(idStr));
+		if(!"-1".equals(id)) {
+			builder.id(Long.parseLong(id));
 			builder.updateDate(LocalDateTime.now());
 		}
 		

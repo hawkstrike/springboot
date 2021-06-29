@@ -43,7 +43,7 @@
 
 .board_insertion_link {
 	width: 100%;
-	line-height: 40px;
+	line-height: 36px;
 }
 
 .board_table {
@@ -110,4 +110,25 @@
 	width: calc(100% - 85px);
 	height: 100%;
 	padding: 10px 5px 5px 10px;
+}
+
+.board_detail_button_area {
+	float: right;
+	height: 40px;
+	margin: 10px 1px 0 0;
+}
+
+.board_detail_button_area div {
+	width: 70px;
+	line-height: 40px;
+	border: 1px solid #000000;
+	text-align: center;
+}
+
+.board_detail_button_area div a {
+	width: 100%;
+}
+
+.board_detail_button_area div:not(:last-child) {
+	margin-right: 10px;
 }
