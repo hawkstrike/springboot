@@ -1,8 +1,15 @@
 
 $(function () {
-
+	
+	// 상세보기 click event
+	/*$(document).on('click', '.board_detail', function () {
+		const id = $(this).data('id').trim();
+		
+	});*/
+	
 	// 글 등록 button click event
 	$(document).on('click', '.btn_board_save', async () => {
+		$(this).addClass('disabled');
 		const type = $('.board_detail_area').data('type');
 		const id = (type === 'r') ? $('.board_id_area').data('id') : -1;
 		const title = $('.board_title').val().trim();
@@ -55,7 +62,11 @@ $(function () {
 			});
 			
 			if (responseId !== -1) {
-				$('.btn_board_list').get(0).click();
+				if (type === 'i') {
+					$('.btn_board_list').get(0).click();
+				} else {
+					location.reload();
+				}
 			}
 		}
 	});

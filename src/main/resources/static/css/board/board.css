@@ -50,6 +50,10 @@
 	width: 100%;
 }
 
+.board_detail_link {
+	width: 100%;
+}
+
 .board_detail_area {
 	display: table;
 	width: 100%;
@@ -59,8 +63,6 @@
 .board_detail_area span {
 	display: inline-block;
 	width: 80px;
-	height: 100%;
-	vertical-align: top;
 	box-sizing: border-box;
 	text-align: right;
 	line-height: 40px;
@@ -76,10 +78,15 @@
 
 .board_top_area input {
 	line-height: 40px;
+	padding-left: 10px;
+}
+
+.board_id_area+.board_title_area {
+	margin-left: 15px;
 }
 
 .board_title_area {
-	width: 60%;
+	width: 55%;
 }
 
 .board_title {
@@ -103,6 +110,10 @@
 .board_content_area {
 	width: 100%;
 	height: 100%;
+}
+
+.board_content_area span {
+	vertical-align: top;
 }
 
 .board_content {

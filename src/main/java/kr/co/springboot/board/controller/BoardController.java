@@ -33,8 +33,8 @@ public class BoardController {
 		return boardService.findAll(paramMap);
 	}
 	
-	@RequestMapping(value = "/findOne", method = {RequestMethod.GET, RequestMethod.POST}, produces = "application/json;charset=UTF-8;")
-	public ModelAndView findOne(@RequestParam HashMap<String, Object> paramMap) throws Exception {
+	@RequestMapping(value = "/findById", method = {RequestMethod.GET, RequestMethod.POST}, produces = "application/json;charset=UTF-8;")
+	public ModelAndView findById(@RequestParam HashMap<String, Object> paramMap) throws Exception {
 		ModelAndView mav = new ModelAndView("board/boardDetail");
 		String type = paramMap.getOrDefault("type", "r").toString().strip();
 		

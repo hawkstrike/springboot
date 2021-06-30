@@ -8,9 +8,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -57,12 +57,7 @@ public class BoardService {
 		if (optional.isPresent()) {
 			log.info("[findById] [boardVO] - " + boardVO.toString());
 			
-			BoardVO.BoardVOBuilder builder = BoardVO.builder();
-			
-			builder.id(boardVO.getId());
-			builder.readCount(boardVO.getReadCount() + 1);
-			
-			return boardRepository.save(builder.build());
+			boardRepository.updateReadCount(boardVO.getId());
 		} else {
 			if ("-1".equals(id)) {
 				log.error("[findById] - You need to check board id. Board id was set -1 by force.");
@@ -116,26 +111,6 @@ public class BoardService {
 	 * @throws Exception
 	 */
 	public List<BoardVO> delete(List<Long> idList) throws Exception {
-		List<BoardVO> boardList = new ArrayList<>();
-		BoardVO.BoardVOBuilder builder = BoardVO.builder();
-		
-		builder.deleteYn("Y");
-		builder.deleteDate(LocalDateTime.now());
-		
-		for (long id : idList) {
-			builder.id(id);
-			
-			boardList.add(builder.build());
-		}
-		
-		return boardRepository.saveAll(boardList);
-		
-		/*if (idList.size() >= 2) {
-			boardRepository.deleteAllById(idList);
-		} else if (idList.size() == 1) {
-			boardRepository.deleteById(idList.get(0));
-		}*/
-		
-		//List<BoardVO> resultList = boardRepository.findAllById(idList);
+		return boardRepository.updateDeleteYn(idList);
 	}
 }

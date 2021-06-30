@@ -41,7 +41,7 @@
 		</div>
 		
 		<div class="board_button_area">
-			<a href="/board/findOne?type=i" class="board_insertion_link">등록</a>
+			<a href="/board/findById?type=i" class="board_insertion_link">등록</a>
 		</div>
 	</div>
 	
@@ -72,7 +72,10 @@
 		<tbody th:if="${resultList.size() != 0}">
 		<tr th:each="board : ${resultList}">
 			<td th:text="${board.id}"></td>
-			<td th:text="${board.title}"></td>
+			<td>
+				<a th:href="@{/board/findById(type=r, id=${board.id})}" th:text="${board.title}" class="board_detail_link">
+				</a>
+			</td>
 			<td th:text="${board.userName}"></td>
 			<td th:text="${board.readCount}"></td>
 			<td th:text="${board.createDate}"></td>
