@@ -4,6 +4,7 @@ import kr.co.springboot.board.service.BoardService;
 import kr.co.springboot.board.vo.BoardVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -21,7 +22,7 @@ public class BoardController {
 	@GetMapping(value = "")
 	public ModelAndView main(@RequestParam HashMap<String, Object> paramMap) throws Exception {
 		ModelAndView mav = new ModelAndView("board/board");
-		List<BoardVO> resultList = boardService.findAll(paramMap);
+		Page<BoardVO> resultList = boardService.findAll(paramMap);
 		
 		mav.addObject("resultList", resultList);
 		
@@ -29,8 +30,15 @@ public class BoardController {
 	}
 	
 	@PostMapping(value = "/findAll", produces = "application/json;charset=UTF-8")
-	public List<BoardVO> findAll(@RequestParam HashMap<String, Object> paramMap) throws Exception {
-		return boardService.findAll(paramMap);
+	public HashMap<String, Object> findAll(@RequestParam HashMap<String, Object> paramMap) throws Exception {
+		HashMap<String, Object> hashMap = new HashMap<>();
+		Page<BoardVO> resultList = boardService.findAll(paramMap);
+		
+		hashMap.put("totalCount", resultList.getTotalElements());
+		hashMap.put("totalPage", resultList.getTotalPages());
+		hashMap.put("resultList", resultList.getContent());
+		
+		return hashMap;
 	}
 	
 	@RequestMapping(value = "/findById", method = {RequestMethod.GET, RequestMethod.POST}, produces = "application/json;charset=UTF-8;")

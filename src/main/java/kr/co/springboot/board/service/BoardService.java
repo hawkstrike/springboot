@@ -8,7 +8,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -28,17 +27,19 @@ public class BoardService {
 	 * @return selected, paginated, sorted BoardVO(s)
 	 * @throws Exception
 	 */
-	public List<BoardVO> findAll(HashMap<String, Object> paramMap) throws Exception {
+	public Page<BoardVO> findAll(HashMap<String, Object> paramMap) throws Exception {
 		log.info("[findAll] [paramMap] - " + paramMap.toString());
 		
-		String pageNumber = paramMap.getOrDefault("startPage", "0").toString().strip();
+		String currentPage = paramMap.getOrDefault("currentPage", "0").toString().strip();
 		String pageSize = paramMap.getOrDefault("pageSize", "10").toString().strip();
-		String sortOrder = paramMap.getOrDefault("sort", "createDate").toString().strip();
-		Page<BoardVO> resultList = boardRepository.findAll(PageRequest.of(Integer.parseInt(pageNumber), Integer.parseInt(pageSize), Sort.by(Sort.Order.desc(sortOrder))));
+		String sortOrder = paramMap.getOrDefault("sortOrder", "createDate").toString().strip();
+		Page<BoardVO> resultList = boardRepository.findAll(PageRequest.of(Integer.parseInt(currentPage), Integer.parseInt(pageSize), Sort.by(Sort.Order.desc(sortOrder))));
 		
+		log.info("[findAll] [currentPage] - " + currentPage);
 		log.info("[findAll] [resultList] [totalCount] - " + resultList.getTotalElements());
+		log.info("[findAll] [resultList] [totalPage] - " + resultList.getTotalPages());
 		
-		return resultList.getContent();
+		return resultList;
 	}
 	
 	/**

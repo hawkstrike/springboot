@@ -59,7 +59,6 @@ public class BoardVO {
 	
 	@PreUpdate
 	private void prepareForUpdate() {
-		//this.updateDate = LocalDateTime.now();
 		if (this.deleteYn == null || "".equals(this.deleteYn)) {
 			this.deleteYn = "N";
 		}

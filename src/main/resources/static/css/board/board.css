@@ -50,6 +50,12 @@
 	width: 100%;
 }
 
+.pagination_area {
+	width: 100%;
+	text-align: center;
+	margin-top: 10px;
+}
+
 .board_detail_link {
 	width: 100%;
 }

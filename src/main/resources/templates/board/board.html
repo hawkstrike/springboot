@@ -63,17 +63,17 @@
 			</tr>
 		</thead>
 		
-		<tbody th:if="${resultList.size() == 0}">
+		<tbody th:if="${resultList.getContent().size() == 0}">
 			<tr>
 				<td colspan="5">조회된 게시물이 없습니다.</td>
 			</tr>
 		</tbody>
 		
-		<tbody th:if="${resultList.size() != 0}">
-		<tr th:each="board : ${resultList}">
-			<td th:text="${board.id}"></td>
+		<tbody th:if="${resultList.getContent().size() != 0}">
+		<tr th:each="board, index : ${resultList}">
+			<td th:text="${index.index + (resultList.getSize() * resultList.number + 1)}"></td>
 			<td>
-				<a th:href="@{/board/findById(type=r, id=${board.id})}" th:text="${board.title}" class="board_detail_link">
+				<a th:href="@{/board/findById(type='r', id=${board.id})}" th:text="${board.title}" class="board_detail_link">
 				</a>
 			</td>
 			<td th:text="${board.userName}"></td>
@@ -83,8 +83,29 @@
 		</tbody>
 	</table>
 	
-	<div class="pagination_area">
-	
+	<div class="pagination_area" th:with="pageSize=${resultList.getSize()},
+											start=${T(Math).floor(resultList.number / pageSize) * pageSize + 1},
+											last=(${start + (pageSize - 1) < resultList.totalPages ? start + (pageSize - 1) : resultList.totalPages})">
+		<div th:class="${resultList.first} ? 'disabled'">
+			<a th:href="${resultList.first} ? 'javscript:' : @{/board(currentPage=0)}" title="처음으로">&lt;&lt;</a>
+		</div>
+		
+		<div th:class="${resultList.first} ? 'disabled'">
+			<a th:href="${resultList.first} ? 'javascript:' : @{/board(currentpage=${resultList.number})}" title="이전">&lt;</a>
+		</div>
+		
+		<div th:each="page : ${#numbers.sequence(start, last)}"
+		     th:class="${page == resultList.number - 1} ? 'active'">
+			<a th:href="@{/board(currentPage=${page - 1})}" th:title="${page}" th:text="${page}"></a>
+		</div>
+		
+		<div th:class="${resultList.last} ? 'disabled'">
+			<a th:href="${resultList.last} ? 'javascript:' : @{/board(currentPage=${resultList.number + 1})}" title="다음">&gt;</a>
+		</div>
+		
+		<div th:class="${resultList.last} ? 'disabled'">
+			<a th:href="${resultList.last} ? 'javascript:' : @{/board(currentPage=${resultList.totalPages - 1})}" title="끝으로">&gt;&gt;</a>
+		</div>
 	</div>
 </div>
 
