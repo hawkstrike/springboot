@@ -1,7 +1,5 @@
 package kr.co.springboot.board.vo;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -54,6 +52,7 @@ public class BoardVO {
 	@PrePersist
 	private void prepareForInsert() {
 		this.createDate = LocalDateTime.now();
+		this.updateDate = LocalDateTime.now();
 		this.deleteYn = "N";
 	}
 	

@@ -1,8 +1,10 @@
 package kr.co.springboot.search.controller;
 
 import kr.co.springboot.search.service.SearchService;
+import kr.co.springboot.search.vo.SearchBoardVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,6 +24,9 @@ public class SearchController {
 	@GetMapping(value = "")
 	public ModelAndView main(@RequestParam HashMap<String, Object> paramMap) throws Exception {
 		ModelAndView mav = new ModelAndView("search/search");
+		Page<SearchBoardVO> resultList = searchService.findAll(paramMap);
+		
+		mav.addObject("resultList", resultList);
 		
 		return mav;
 	}
