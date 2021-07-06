@@ -18,6 +18,54 @@
 </th:block>
 
 <div layout:fragment="content" class="container_wrap">
-
+	<h2>통합검색</h2>
+	
+	<div class="total_search_top_area">
+		<select class="select_index">
+			<option value="">전체</option>
+			<option value="board">게시판</option>
+		</select>
+		<input type="text" class="search_keyword" title="검색어를 입력하세요." placeholder="검색어를 입력하세요."/>
+		<div class="btn_total_search_area">
+			<a href="javascript:" class="btn_total_search">
+				<i class="fas fa-search"></i>
+			</a>
+		</div>
+	</div>
+	
+	<div class="total_search_index_area">
+		<a href="javascript:" class="btn_search_index">
+			<span>전체</span>
+		</a>
+		<a href="javascript:" class="btn_search_index">
+			<span>게시판</span>
+		</a>
+	</div>
+	
+	<div class="total_search_content_area">
+		<div class="total_search_count_area">
+			통합 검색 건수
+			(<span class="total_search_count">0</span>건)
+		</div>
+		
+		<div class="search_content_area">
+			<div class="search_index_name">
+				게시판
+				(<span class="search_count">0</span>건)
+			</div>
+			
+			<div th:each="result : ${resultList}" class="search_result">
+				<span th:text="${result.id}"></span>
+				<span th:text="${result.createDate}"></span>
+				<span th:text="${result.title}"></span>
+				<span th:text="${result.content}"></span>
+				<span th:text="${result.userName}"></span>
+				<span th:text="${result.readCount}"></span>
+				<span th:text="${result.deleteYn}"></span>
+				<span th:text="${result.updateDate}"></span>
+				<span th:text="${result.deleteDate}"></span>
+			</div>
+		</div>
+	</div>
 </div>
 </html>

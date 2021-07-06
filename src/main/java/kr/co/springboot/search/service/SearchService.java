@@ -21,15 +21,16 @@ public class SearchService {
 	public Page<SearchBoardVO> findAll(HashMap<String, Object> paramMap) throws Exception {
 		log.info("[findAll] [paramMap] - " + paramMap.toString());
 		
+		String index = paramMap.getOrDefault("index", "").toString().strip();
 		String currentPage = paramMap.getOrDefault("currentPage", "0").toString().strip();
-		String pageSize = paramMap.getOrDefault("pageSize", "10").toString().strip();
+		String pageSize = paramMap.getOrDefault("pageSize", "3").toString().strip();
 		String sortOrder = paramMap.getOrDefault("sortOrder", "create_date").toString().strip();
 		Page<SearchBoardVO> resultList = searchRepository.findAll(PageRequest.of(Integer.parseInt(currentPage), Integer.parseInt(pageSize), Sort.by(Sort.Order.desc(sortOrder))));
 		
 		log.info("[findAll] [currentPage] - " + currentPage);
 		log.info("[findAll] [resultList] [totalCount] - " + resultList.getTotalElements());
 		log.info("[findAll] [resultList] [totalPage] - " + resultList.getTotalPages());
-		log.info("[findAll] [resultList] [resultCount] - " + resultList.getContent().toString());
+		log.info("[findAll] [resultList] [content] - " + resultList.getContent().toString());
 		
 		return resultList;
 	}
