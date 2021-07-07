@@ -34,7 +34,7 @@
 	</div>
 	
 	<div class="total_search_index_area">
-		<a href="javascript:" class="btn_search_index">
+		<a href="javascript:" class="btn_search_index active">
 			<span>전체</span>
 		</a>
 		<a href="javascript:" class="btn_search_index">
@@ -45,25 +45,30 @@
 	<div class="total_search_content_area">
 		<div class="total_search_count_area">
 			통합 검색 건수
-			(<span class="total_search_count">0</span>건)
+			(<span th:text="${resultList.getTotalElements()}" class="total_search_count"></span>건)
 		</div>
 		
 		<div class="search_content_area">
 			<div class="search_index_name">
 				게시판
-				(<span class="search_count">0</span>건)
+				(<span th:text="${resultList.getSize()}" class="search_count"></span>건)
 			</div>
 			
-			<div th:each="result : ${resultList}" class="search_result">
-				<span th:text="${result.id}"></span>
-				<span th:text="${result.createDate}"></span>
-				<span th:text="${result.title}"></span>
-				<span th:text="${result.content}"></span>
-				<span th:text="${result.userName}"></span>
-				<span th:text="${result.readCount}"></span>
-				<span th:text="${result.deleteYn}"></span>
-				<span th:text="${result.updateDate}"></span>
-				<span th:text="${result.deleteDate}"></span>
+			<div class="search_result_area">
+				<div th:each="result : ${resultList}" class="search_result">
+					<div class="search_result_top_area">
+						<span th:text="${result.title}" class="search_result_title"></span>
+						<div class="search_result_info_area">
+							등록일&nbsp;:&nbsp;<span th:text="${result.createDate}"></span>
+							작성자&nbsp;:&nbsp;<span th:text="${result.userName}"></span>
+							조회수&nbsp;:&nbsp;<span th:text="${result.readCount}"></span>
+						</div>
+					</div>
+					
+					<div class="search_result_content_area">
+						<span th:text="${result.content}"></span>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

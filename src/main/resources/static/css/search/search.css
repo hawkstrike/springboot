@@ -50,13 +50,58 @@
 
 .total_search_count_area {
 	display: block;
+	margin: 15px 0;
 }
 
 .search_content_area {
 	display: block;
 }
 
+.search_index_name {
+	display: block;
+	background-color: #DDDDDDFF;
+	padding: 10px;
+}
+
+.search_result_area {
+	display: block;
+	margin: 15px 0;
+	border-bottom: 2px solid #000000;
+}
+
 .search_result {
 	display: block;
-	border: 1px solid #000000;
+	padding: 10px;
+	border-bottom: 1px solid #000000;
 }
+
+.search_result div {
+	display: block;
+}
+
+.search_result_top_area {
+	margin-bottom: 10px;
+}
+
+.search_result_title {
+	display: inline-block;
+	width: 50%;
+	font-size: 18px;
+}
+
+.search_result_info_area {
+	display: inline-block;
+	float: right;
+}
+
+.search_result_info_area span:not(:last-child):after {
+	content: '|';
+	margin: 0 10px;
+	color: #000000;
+}
+
+.search_result_title_area span:not(.search_result_title) {
+	display: inline-block;
+	margin-right:5px;
+}
+
