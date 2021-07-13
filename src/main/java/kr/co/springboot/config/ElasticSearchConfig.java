@@ -31,7 +31,7 @@ public class ElasticSearchConfig extends AbstractElasticsearchConfiguration {
 		return RestClients.create(clientConfiguration).rest();
 	}
 	
-	@Bean
+	@Bean(name = {"elasticsearchOperations"})
 	public ElasticsearchOperations elasticsearchOperations() {
 		return new ElasticsearchRestTemplate(elasticsearchClient());
 	}

@@ -2,11 +2,15 @@ package kr.co.springboot.board.service;
 
 import kr.co.springboot.board.repository.BoardRepository;
 import kr.co.springboot.board.vo.BoardVO;
+import kr.co.springboot.search.service.IndexService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.query.IndexQuery;
+import org.springframework.data.elasticsearch.core.query.IndexQueryBuilder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -20,6 +24,15 @@ public class BoardService {
 	
 	@Autowired
 	private BoardRepository boardRepository;
+	
+	@Autowired
+	private IndexService indexService;
+	
+	private String indexName;
+	
+	public BoardService() {
+		indexName = "springboot";
+	}
 	
 	/**
 	 * select all about Table Board
@@ -100,6 +113,15 @@ public class BoardService {
 		if(!"-1".equals(id)) {
 			builder.id(Long.parseLong(id));
 			builder.updateDate(LocalDateTime.now());
+		}
+		
+		IndexQuery indexQuery = new IndexQueryBuilder()
+				.withObject(builder.build())
+				.build();
+		String documentId = indexService.index(indexQuery, indexName);
+		
+		if ("-1".equals(documentId)) {
+			log.error("[save] - Fail to index in elasticsearch!");
 		}
 		
 		return boardRepository.save(builder.build());
