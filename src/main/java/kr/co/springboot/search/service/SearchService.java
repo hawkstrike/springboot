@@ -2,6 +2,7 @@ package kr.co.springboot.search.service;
 
 import kr.co.springboot.search.repository.SearchRepository;
 import kr.co.springboot.search.vo.SearchBoardVO;
+import kr.co.springboot.search.vo.SearchInfoVO;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.index.query.Operator;
 import org.elasticsearch.index.query.QueryStringQueryBuilder;
@@ -10,16 +11,18 @@ import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.ConfigurationPropertiesBinding;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
-import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -27,6 +30,9 @@ public class SearchService {
 	
 	@Autowired
 	private SearchRepository searchRepository;
+	
+	@Autowired
+	private SearchInfoVO searchInfoVO;
 	
 	@Qualifier("elasticsearchOperations")
 	@Autowired
@@ -57,9 +63,8 @@ public class SearchService {
 		String pageSize = paramMap.getOrDefault("pageSize", "3").toString().strip();
 		String sortField = paramMap.getOrDefault("sortField", "create_date").toString().strip();
 		String sortOrder = paramMap.getOrDefault("sortOrder", "desc").toString().strip();
-		String[] searchFieldArr = (String[]) paramMap.getOrDefault("searchField[]", new String[]{});
-		StringBuffer queryString = new StringBuffer(query);
-		QueryStringQueryBuilder queryBuilder = new QueryStringQueryBuilder(queryString.toString());
+		String[] searchFieldArr = (String[]) paramMap.getOrDefault("searchField[]", new String[]{"title", "content"});
+		QueryStringQueryBuilder queryBuilder = new QueryStringQueryBuilder(query);
 		Operator operator = ("and".equals(searchOperator)) ? Operator.AND : Operator.OR;
 		HighlightBuilder highlightBuilder = new HighlightBuilder();
 		
@@ -68,19 +73,31 @@ public class SearchService {
 		for (String searchField : searchFieldArr) {
 			String[] fieldInfoArr = searchField.split("/");
 			String field = fieldInfoArr[0];
-			float score = (fieldInfoArr.length >= 2) ? Float.parseFloat(fieldInfoArr[1]) : 0f;
+			float score = (fieldInfoArr.length >= 2) ? Float.parseFloat(fieldInfoArr[1]) : 100f;
+			
+			log.warn("[search] [field] - " + field);
 			
 			queryBuilder.field(field, score);
 			highlightBuilder.field(field);
 		}
 		
-		Query searchQuery = new NativeSearchQueryBuilder()
-				.withQuery(queryBuilder)
-				.withPageable(PageRequest.of(Integer.parseInt(currentPage), Integer.parseInt(pageSize)))
-				.withSort(SortBuilders.fieldSort(sortField).order(SortOrder.fromString(sortOrder)))
-				.withHighlightBuilder(highlightBuilder)
-				.build();
+		highlightBuilder.preTags("<span style=\"color:red\">");
+		highlightBuilder.postTags("</span>");
+		highlightBuilder.order(HighlightBuilder.Order.SCORE);
+		highlightBuilder.fragmentSize(200);
+		highlightBuilder.numOfFragments(1);
+		highlightBuilder.requireFieldMatch(true);
 		
-		return elasticsearchOperations.search(searchQuery, SearchBoardVO.class);
+		NativeSearchQueryBuilder searchQuery = new NativeSearchQueryBuilder()
+				.withPageable(PageRequest.of(Integer.parseInt(currentPage), Integer.parseInt(pageSize)))
+				.withSort(SortBuilders.scoreSort().order(SortOrder.DESC))
+				.withSort(SortBuilders.fieldSort(sortField).order(SortOrder.fromString(sortOrder)))
+				.withHighlightBuilder(highlightBuilder);
+		
+		if (!"".equals(query)) {
+			searchQuery.withQuery(queryBuilder);
+		}
+		
+		return elasticsearchOperations.search(searchQuery.build(), SearchBoardVO.class);
 	}
 }

@@ -20,18 +20,20 @@
 <div layout:fragment="content" class="container_wrap">
 	<h2>통합검색</h2>
 	
+	<form class="search_form" method="post" action="/search">
 	<div class="total_search_top_area">
 		<select class="select_index">
 			<option value="">전체</option>
 			<option value="board">게시판</option>
 		</select>
-		<input type="text" class="search_keyword" title="검색어를 입력하세요." placeholder="검색어를 입력하세요."/>
+		<input type="text" class="search_keyword" name="query" title="검색어를 입력하세요." placeholder="검색어를 입력하세요." th:value="${paramMap.getOrDefault('query', '')}"/>
 		<div class="btn_total_search_area">
 			<a href="javascript:" class="btn_total_search">
 				<i class="fas fa-search"></i>
 			</a>
 		</div>
 	</div>
+	</form>
 	
 	<div class="total_search_index_area">
 		<a href="javascript:" class="btn_search_index active">
@@ -45,28 +47,28 @@
 	<div class="total_search_content_area">
 		<div class="total_search_count_area">
 			통합 검색 건수
-			(<span th:text="${resultList.getTotalElements()}" class="total_search_count"></span>건)
+			(<span th:text="${resultList.getTotalHits()}" class="total_search_count"></span>건)
 		</div>
 		
 		<div class="search_content_area">
 			<div class="search_index_name">
 				게시판
-				(<span th:text="${resultList.getSize()}" class="search_count"></span>건)
+				(<span th:text="${resultList.getTotalHits()}" class="search_count"></span>건)
 			</div>
 			
 			<div class="search_result_area">
-				<div th:each="result : ${resultList}" class="search_result">
+				<div th:each="result : ${resultList.getSearchHits()}" class="search_result">
 					<div class="search_result_top_area">
-						<span th:text="${result.title}" class="search_result_title"></span>
+						<span th:text="${result.getContent().getTitle()}" class="search_result_title"></span>
 						<div class="search_result_info_area">
-							등록일&nbsp;:&nbsp;<span th:text="${result.createDate}"></span>
-							작성자&nbsp;:&nbsp;<span th:text="${result.userName}"></span>
-							조회수&nbsp;:&nbsp;<span th:text="${result.readCount}"></span>
+							등록일&nbsp;:&nbsp;<span th:text="${result.getContent().getCreateDate()}"></span>
+							작성자&nbsp;:&nbsp;<span th:text="${result.getContent().getUserName()}"></span>
+							조회수&nbsp;:&nbsp;<span th:text="${result.getContent().getReadCount()}"></span>
 						</div>
 					</div>
 					
 					<div class="search_result_content_area">
-						<span th:text="${result.content}"></span>
+						<span th:utext="${result.getHighlightField('content')}"></span>
 					</div>
 				</div>
 			</div>
