@@ -7,7 +7,7 @@ import lombok.ToString;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 
-import javax.persistence.*;
+import javax.persistence.Id;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -15,7 +15,7 @@ import java.time.format.DateTimeFormatter;
 @AllArgsConstructor
 @Getter
 @ToString
-@Document(indexName = "springboot")
+@Document(indexName = "board")
 public class SearchBoardVO {
 	@Id
 	private Long id; // 아이디

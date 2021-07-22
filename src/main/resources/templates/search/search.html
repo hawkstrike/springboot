@@ -47,28 +47,28 @@
 	<div class="total_search_content_area">
 		<div class="total_search_count_area">
 			통합 검색 건수
-			(<span th:text="${resultList.getTotalHits()}" class="total_search_count"></span>건)
+			(<span th:text="${totalCount}" class="total_search_count"></span>건)
 		</div>
 		
-		<div class="search_content_area">
+		<div th:each="result, index : ${resultList}" class="search_content_area">
 			<div class="search_index_name">
-				게시판
-				(<span th:text="${resultList.getTotalHits()}" class="search_count"></span>건)
+				<span th:text="${korNamesMap.get(indexList.get(index.index))}"/>
+				(<span th:text="${result.getTotalHits()}" class="search_count"></span>건)
 			</div>
 			
 			<div class="search_result_area">
-				<div th:each="result : ${resultList.getSearchHits()}" class="search_result">
+				<div th:each="resultContent : ${result.getSearchHits()}" class="search_result">
 					<div class="search_result_top_area">
-						<span th:text="${result.getContent().getTitle()}" class="search_result_title"></span>
+						<span th:text="${resultContent.getContent().getTitle()}" class="search_result_title"></span>
 						<div class="search_result_info_area">
-							등록일&nbsp;:&nbsp;<span th:text="${result.getContent().getCreateDate()}"></span>
-							작성자&nbsp;:&nbsp;<span th:text="${result.getContent().getUserName()}"></span>
-							조회수&nbsp;:&nbsp;<span th:text="${result.getContent().getReadCount()}"></span>
+							등록일&nbsp;:&nbsp;<span th:text="${resultContent.getContent().getCreateDate()}"></span>
+							작성자&nbsp;:&nbsp;<span th:text="${resultContent.getContent().getUserName()}"></span>
+							조회수&nbsp;:&nbsp;<span th:text="${resultContent.getContent().getReadCount()}"></span>
 						</div>
 					</div>
 					
 					<div class="search_result_content_area">
-						<span th:utext="${result.getHighlightField('content')}"></span>
+						<span th:utext="${resultContent.getHighlightField('content')}"></span>
 					</div>
 				</div>
 			</div>
